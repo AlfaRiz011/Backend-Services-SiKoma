@@ -2,10 +2,9 @@ const User = require('../models/User');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 
 // Create User
-exports.createUser = async (req, res, next) => {
+exports.createUser = async (req, res) => {
     try {
-        const newUser = new User(req.body);
-        await newUser.save();
+        const newUser = await User.create(req.body);
         sendSuccessResponse(res, 201, 'User created successfully', newUser);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error creating user', error.message);
@@ -13,9 +12,9 @@ exports.createUser = async (req, res, next) => {
 };
 
 // Get All Users
-exports.getAllUsers = async (req, res, next) => {
+exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.findAll();
         sendSuccessResponse(res, 200, 'Users fetched successfully', users);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error fetching users', error.message);
@@ -23,9 +22,9 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 // Get User by ID
-exports.getUserById = async (req, res, next) => {
+exports.getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findByPk(req.params.id);
         if (!user) {
             return sendErrorResponse(res, 404, 'User not found');
         }
@@ -36,12 +35,14 @@ exports.getUserById = async (req, res, next) => {
 };
 
 // Update User
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const user = await User.findByPk(req.params.id);
         if (!user) {
             return sendErrorResponse(res, 404, 'User not found');
         }
+
+        await user.update(req.body);
         sendSuccessResponse(res, 200, 'User updated successfully', user);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error updating user', error.message);
@@ -49,12 +50,14 @@ exports.updateUser = async (req, res, next) => {
 };
 
 // Delete User
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findByPk(req.params.id);
         if (!user) {
             return sendErrorResponse(res, 404, 'User not found');
         }
+
+        await user.destroy();
         sendSuccessResponse(res, 204, 'User deleted successfully');
     } catch (error) {
         sendErrorResponse(res, 500, 'Error deleting user', error.message);

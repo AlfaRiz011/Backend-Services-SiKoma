@@ -1,15 +1,25 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../database/Database');
+const Post = require('./Post'); 
 
-const TagsSchema = new mongoose.Schema({
-  tagsId: {
-    type: String,
-    required: true,
-    unique: true
+const Tags = sequelize.define('Tag', {
+  postId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Post,
+      key: 'postId',
+    },
   },
-  tagsName: {
-    type: String,
-    required: true
-  }
+  tagName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+}, {
+  timestamps: false, 
 });
 
-module.exports = mongoose.model('Tags', TagsSchema);
+Tags.belongsTo(Post, { foreignKey: 'postId' });
+
+module.exports = Tags;

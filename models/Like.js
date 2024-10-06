@@ -1,24 +1,30 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../database/Database');
+const User = require('./User'); 
+const Post = require('./Post'); 
 
-// Import UserSchema dan PostSchema untuk reference di dalam Like
-const UserSchema = require('./User').schema;
-const PostSchema = require('./Post').schema;
-
-// Definisi Schema untuk Like
-const LikeSchema = new mongoose.Schema({
-  likeId: {
-    type: String,
-    required: true,
-    unique: true
+const Like = sequelize.define('Like', {
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'userId',
+    },
   },
-  user: {
-    type: UserSchema,  
-    required: true
+  postId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Post,
+      key: 'postId',
+    },
   },
-  post: {
-    type: PostSchema,  
-    required: true
-  }
+}, {
+  timestamps: false, 
 });
 
-module.exports = mongoose.model('Like', LikeSchema);
+Like.belongsTo(User, { foreignKey: 'userId' });
+Like.belongsTo(Post, { foreignKey: 'postId' });
+
+module.exports = Like;

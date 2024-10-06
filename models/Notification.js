@@ -1,30 +1,44 @@
-const mongoose = require('mongoose');
+// Notification.js
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../database/Database');
+const Post = require('./Post'); // Import Post model
+const User = require('./User'); // Import User model
 
-const PostSchema = require('./Post').schema;
-const UserSchema = require('./User').schema;
-
-const NotificationSchema = new mongoose.Schema({
+const Notification = sequelize.define('Notification', {
   notificationId: {
-    type: String,
-    required: true,
-    unique: true
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  content: {
-    type: PostSchema, 
-    required: true
+  contentId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Post,
+      key: 'postId',
+    },
   },
-  recipient: {
-    type: UserSchema, 
-    required: true
+  recipientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'userId',
+    },
   },
   type: {
-    type: String, 
-    required: true
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   pushTime: {
-    type: Date,
-    default: Date.now
-  }
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+}, {
+  timestamps: false, 
 });
 
-module.exports = mongoose.model('Notification', NotificationSchema);
+Notification.belongsTo(Post, { foreignKey: 'contentId' });
+Notification.belongsTo(User, { foreignKey: 'recipientId' });
+
+module.exports = Notification;

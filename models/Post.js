@@ -1,44 +1,46 @@
-const mongoose = require('mongoose');
+// Post.js
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../database/Database');
+const Admin = require('./Admin'); 
 
-const TagsSchema = require('./Tags').schema;
-const AdminSchema = require('./Admin').schema;
-
-
-
-const PostSchema = new mongoose.Schema({
+const Post = sequelize.define('Post', {
   postId: {
-    type: String,
-    required: true,
-    unique: true
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  author: {
-    type: AdminSchema,
-    required: true
+  authorId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Admin,
+      key: 'adminId',
+    },
   },
   image: {
-    type: String, 
-    default: ''
+    type: DataTypes.STRING,
+    defaultValue: '',
   },
   likes: {
-    type: Number,
-    default: 0
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
   },
   postDesc: {
-    type: String,
-    required: true
+    type: DataTypes.TEXT,
+    allowNull: false,
   },
   type: {
-    type: String,
-    required: true
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  tags: [{
-    type: TagsSchema, 
-    required: false
-  }],
   createdDate: {
-    type: Date,
-    default: Date.now
-  }
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+}, {
+  timestamps: false, 
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+Post.belongsTo(Admin, { foreignKey: 'authorId' });
+
+module.exports = Post;

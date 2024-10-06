@@ -1,20 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const TagController = require('../controllers/TagsController');
+const tagController = require('../controllers/tagsController'); // Pastikan path sesuai dengan lokasi kontroler Anda
 
-// Create Tag
-router.post('/', TagController.createTag);
+// Route untuk membuat tag
+router.post('/', tagController.createTag);
 
-// Get All Tags
-router.get('/', TagController.getAllTags);
-
-// Get Tag by ID
-router.get('/:id', TagController.getTagById);
-
-// Update Tag
-router.put('/:id', TagController.updateTag);
-
-// Delete Tag
-router.delete('/:id', TagController.deleteTag);
+// Route untuk mendapatkan semua tag berdasarkan postId
+router.get('/:postId', tagController.getTagsByPostId);
 
 module.exports = router;

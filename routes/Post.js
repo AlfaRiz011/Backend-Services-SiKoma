@@ -1,20 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const PostController = require('../controllers/PostController');
+const postController = require('../controllers/postController');
 
 // Create Post
-router.post('/', PostController.createPost);
+router.post('/', postController.createPost);
 
 // Get All Posts
-router.get('/', PostController.getAllPosts);
+router.get('/', postController.getAllPosts);
 
 // Get Post by ID
-router.get('/:id', PostController.getPostById);
+router.get('/:postId', postController.getPostById);
+
+// Get Posts by Type (Events)
+router.get('/events', postController.getPostsEvents);
 
 // Update Post
-router.put('/:id', PostController.updatePost);
+router.put('/:postId', postController.updatePost);
 
 // Delete Post
-router.delete('/:id', PostController.deletePost);
+router.delete('/:postId', postController.deletePost);
 
 module.exports = router;

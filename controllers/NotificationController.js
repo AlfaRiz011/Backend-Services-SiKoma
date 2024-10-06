@@ -4,18 +4,17 @@ const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseH
 // Create Notification
 exports.createNotification = async (req, res) => {
   try {
-    const newNotification = new Notification(req.body);
-    const savedNotification = await newNotification.save();
-    return sendSuccessResponse(res, 201, 'Notification created successfully', savedNotification);
+    const newNotification = await Notification.create(req.body); 
+    return sendSuccessResponse(res, 201, 'Notification created successfully', newNotification);
   } catch (error) {
-    return Response(res, 400, 'Failed to create notification', error.message);
+    return sendErrorResponse(res, 400, 'Failed to create notification', error.message);
   }
 };
 
 // Get All Notifications
 exports.getAllNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find();
+    const notifications = await Notification.findAll(); 
     return sendSuccessResponse(res, 200, 'Notifications retrieved successfully', notifications);
   } catch (error) {
     return sendErrorResponse(res, 500, 'Failed to retrieve notifications', error.message);
@@ -25,7 +24,7 @@ exports.getAllNotifications = async (req, res) => {
 // Get Notification by notificationId
 exports.getNotificationById = async (req, res) => {
   try {
-    const notification = await Notification.findOne({ notificationId: req.params.notificationId });
+    const notification = await Notification.findOne({ where: { id: req.params.notificationId } }); 
     if (!notification) {
       return sendErrorResponse(res, 404, 'Notification not found');
     }
@@ -38,14 +37,14 @@ exports.getNotificationById = async (req, res) => {
 // Update Notification
 exports.updateNotification = async (req, res) => {
   try {
-    const updatedNotification = await Notification.findOneAndUpdate(
-      { notificationId: req.params.notificationId },
-      req.body,
-      { new: true }
-    );
-    if (!updatedNotification) {
+    const [updated] = await Notification.update(req.body, { 
+      where: { id: req.params.notificationId }, 
+      returning: true, 
+    });
+    if (!updated) {
       return sendErrorResponse(res, 404, 'Notification not found');
     }
+    const updatedNotification = await Notification.findOne({ where: { id: req.params.notificationId } });
     return sendSuccessResponse(res, 200, 'Notification updated successfully', updatedNotification);
   } catch (error) {
     return sendErrorResponse(res, 400, 'Failed to update notification', error.message);
@@ -55,11 +54,11 @@ exports.updateNotification = async (req, res) => {
 // Delete Notification
 exports.deleteNotification = async (req, res) => {
   try {
-    const deletedNotification = await Notification.findOneAndDelete({ notificationId: req.params.notificationId });
-    if (!deletedNotification) {
+    const deleted = await Notification.destroy({ where: { id: req.params.notificationId } }); 
+    if (!deleted) {
       return sendErrorResponse(res, 404, 'Notification not found');
     }
-    return sendSuccessResponse(res, 200, 'Notification deleted successfully', deletedNotification);
+    return sendSuccessResponse(res, 200, 'Notification deleted successfully');
   } catch (error) {
     return sendErrorResponse(res, 500, 'Failed to delete notification', error.message);
   }

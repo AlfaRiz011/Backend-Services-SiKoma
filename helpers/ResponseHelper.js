@@ -39,3 +39,22 @@ const sendErrorResponse = (res, statusCode, message, error = null) => {
 };
 
 module.exports = { sendSuccessResponse, sendErrorResponse };
+
+/**
+ * Helper function to standardize success API responses for login
+ * @param {Object} res - Response object
+ * @param {number} statusCode - HTTP status code
+ * @param {string} message - Response message
+ * @param {string} token - JWT token
+ * @param {Object} user - User object
+ */
+const sendSuccessResponseLogin = (res, statusCode, message, token, user) => {
+    const response = {
+        status: 'success',
+        message,
+        token, 
+        user,  
+    };
+
+    res.status(statusCode).json(response);
+};

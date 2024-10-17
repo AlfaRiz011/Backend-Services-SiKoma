@@ -34,7 +34,7 @@ exports.getPostById = async (req, res) => {
   }
 };
 
-// Get Posts by Type
+// Get Posts by Event
 exports.getPostsEvents = async (req, res) => {
   const post = await Post.findAll({where: {type: 'Events'}}); 
   try {

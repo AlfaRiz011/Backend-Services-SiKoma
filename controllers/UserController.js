@@ -1,17 +1,30 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
+const { generateUniqueUsername } = require('../helpers/UsernameHelper');  
 
 // Create User
 exports.createUser = async (req, res) => {
-    try {
-        const newUser = await User.create(req.body);
-        sendSuccessResponse(res, 201, 'User created successfully', newUser);
-    } catch (error) {
-        sendErrorResponse(res, 500, 'Error creating user', error.message);
-    }
-};
+  try {
+    const { email, password, username, ...otherData } = req.body;
+    
+    const finalUsername = username || await generateUniqueUsername();
 
-// Get All Users
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+      username: finalUsername,
+      ...otherData,
+    });
+
+    sendSuccessResponse(res, 201, 'User created successfully', newUser);
+  } catch (error) {
+    sendErrorResponse(res, 500, 'Error creating user', error.message);
+  }
+};
+  
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll();
@@ -20,8 +33,7 @@ exports.getAllUsers = async (req, res) => {
         sendErrorResponse(res, 500, 'Error fetching users', error.message);
     }
 };
-
-// Get User by ID
+ 
 exports.getUserById = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
@@ -33,8 +45,7 @@ exports.getUserById = async (req, res) => {
         sendErrorResponse(res, 500, 'Error fetching user', error.message);
     }
 };
-
-// Update User
+ 
 exports.updateUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
@@ -48,8 +59,7 @@ exports.updateUser = async (req, res) => {
         sendErrorResponse(res, 500, 'Error updating user', error.message);
     }
 };
-
-// Delete User
+ 
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);

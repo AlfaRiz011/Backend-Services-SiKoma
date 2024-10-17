@@ -8,6 +8,8 @@ const postRoutes = require('./routes/Post');
 const tagsRoutes = require('./routes/Tags');
 const notificationRoutes = require('./routes/Notification');
 const likeRoutes = require('./routes/Like');
+const registerRoutes = require('./routes/Register');
+const loginRoutes = require('./routes/Login');
 
 dotenv.config();
 
@@ -21,13 +23,14 @@ const startServer = async () => {
     await sequelize.sync(); 
     console.log('Database synced successfully');
 
-  
     app.use('/api/users', userRoutes);
     app.use('/api/admins', adminRoutes);
     app.use('/api/posts', postRoutes);
     app.use('/api/tags', tagsRoutes);
     app.use('/api/notifications', notificationRoutes);
     app.use('/api/likes', likeRoutes);
+    app.use('/api/register', registerRoutes);
+    app.use('/api/login', loginRoutes);
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {

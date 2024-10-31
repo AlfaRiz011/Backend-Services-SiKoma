@@ -1,44 +1,37 @@
-// Notification.js
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/Database');
-const Post = require('./Post'); // Import Post model
-const User = require('./User'); // Import User model
+const Post = require('./Post');  
+const User = require('./User');  
 
-const Notification = sequelize.define('Notification', {
-  notificationId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+const UserNotification = sequelize.define('UserNotification', {
+  notif_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
   },
-  contentId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Post,
-      key: 'postId',
-    },
+  user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: User,
+          key: 'user_id',
+      },
+      onDelete: 'CASCADE',
   },
-  recipientId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'userId',
-    },
+  post_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: Post,
+          key: 'post_id',
+      },
+      onDelete: 'CASCADE',
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  pushTime: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+  is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
   },
 }, {
-  timestamps: false, 
+  tableName: 'UserNotification',
+  timestamps: false,
 });
 
-Notification.belongsTo(Post, { foreignKey: 'contentId' });
-Notification.belongsTo(User, { foreignKey: 'recipientId' });
-
-module.exports = Notification;
+module.exports = UserNotification;

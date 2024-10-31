@@ -4,28 +4,27 @@ const User = require('./User');
 const Tags = require('./Tags');
 
 const FollowTag = sequelize.define('FollowTag', {
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
+  user_id: {
+      type: DataTypes.INTEGER,
+      references: {
           model: User,
-          key: 'userId',
-        },
+          key: 'user_id',
       },
-      tagId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
+      onDelete: 'CASCADE',
+      primaryKey: true,
+  },
+  tag_id: {
+      type: DataTypes.INTEGER,
+      references: {
           model: Tags,
-          key: 'tagId',
-        },
+          key: 'tag_id',
       },
+      onDelete: 'CASCADE',
+      primaryKey: true,
+  },
 }, {
-  timestamps: false, 
+  tableName: 'FollowTag',
+  timestamps: false,
 });
-
-
-FollowTag.belongsTo(User, { foreignKey: 'userId' });
-FollowTag.belongsTo(Tags, { foreignKey: 'tagId' });
 
 module.exports = FollowTag;

@@ -2,53 +2,39 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/Database');
 
 const User = sequelize.define('User', {
-  userId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  user_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
   },
-  profilePicture: {
-    type: DataTypes.STRING,
-    defaultValue: '',
+  full_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
   },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+  },
+  profile_pic: {
+      type: DataTypes.STRING,
+  },
+  study_prog: {
+      type: DataTypes.STRING,
+  },
+  faculty: {
+      type: DataTypes.STRING,
   },
   nim: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
-  },
-  faculties: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  studyProgram: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  dateCreated: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+      type: DataTypes.STRING,
   },
 }, {
-  timestamps: false, 
+  tableName: 'User',
+  timestamps: false,
 });
-
 
 module.exports = User;

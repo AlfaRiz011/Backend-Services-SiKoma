@@ -1,46 +1,53 @@
-// Post.js
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/Database');
 const Admin = require('./Admin'); 
 
 const Post = sequelize.define('Post', {
-  postId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+  post_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
   },
-  authorId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Admin,
-      key: 'adminId',
-    },
+  description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
   },
   image: {
-    type: DataTypes.STRING,
-    defaultValue: '',
+      type: DataTypes.STRING,
   },
-  likes: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-  },
-  postDesc: {
-    type: DataTypes.TEXT,
-    allowNull: false,
+  admin_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+          model: Admin,
+          key: 'admin_id',
+      },
   },
   type: {
-    type: DataTypes.STRING,
-    allowNull: false,
+      type: DataTypes.ENUM('information', 'event'),
+      allowNull: false,
   },
-  createdDate: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+  event_name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
+  event_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+  },
+  event_time: {
+      type: DataTypes.TIME,
+      allowNull: true,
   },
 }, {
-  timestamps: false, 
+  tableName: 'Post',
+  timestamps: false,
 });
 
-Post.belongsTo(Admin, { foreignKey: 'authorId' });
+Post.belongsTo(Admin, {
+  foreignKey: 'admin_id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
 
 module.exports = Post;

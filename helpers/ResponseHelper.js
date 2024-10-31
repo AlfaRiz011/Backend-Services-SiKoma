@@ -38,7 +38,6 @@ const sendErrorResponse = (res, statusCode, message, error = null) => {
     res.status(statusCode).json(response);
 };
 
-module.exports = { sendSuccessResponse, sendErrorResponse };
 
 /**
  * Helper function to standardize success API responses for login
@@ -51,10 +50,17 @@ module.exports = { sendSuccessResponse, sendErrorResponse };
 const sendSuccessResponseLogin = (res, statusCode, message, token, user) => {
     const response = {
         status: 'success',
-        message,
-        token, 
-        user,  
+        message, 
     };
+
+    const data = {
+        token,
+        user,
+    };
+
+    response.data = data
 
     res.status(statusCode).json(response);
 };
+
+module.exports = { sendSuccessResponse, sendErrorResponse, sendSuccessResponseLogin };

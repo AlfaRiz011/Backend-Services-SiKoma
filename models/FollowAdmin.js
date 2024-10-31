@@ -3,29 +3,28 @@ const { sequelize } = require('../database/Database');
 const Admin = require('./Admin');
 const User = require('./User');
 
-const FollowAdmin = sequelize.define('FollowAdmin', {
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
+const FollowOrganization = sequelize.define('FollowOrganization', {
+  user_id: {
+      type: DataTypes.INTEGER,
+      references: {
           model: User,
-          key: 'userId',
-        },
+          key: 'user_id',
       },
-      adminId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
+      onDelete: 'CASCADE',
+      primaryKey: true,
+  },
+  admin_id: {
+      type: DataTypes.INTEGER,
+      references: {
           model: Admin,
-          key: 'adminId',
-        },
+          key: 'admin_id',
       },
+      onDelete: 'CASCADE',
+      primaryKey: true,
+  },
 }, {
-  timestamps: false, 
+  tableName: 'FollowOrganization',
+  timestamps: false,
 });
 
-
-FollowAdmin.belongsTo(User, { foreignKey: 'userId' });
-FollowAdmin.belongsTo(Admin, { foreignKey: 'adminId' });
-
-module.exports = FollowAdmin;
+module.exports = FollowOrganization;

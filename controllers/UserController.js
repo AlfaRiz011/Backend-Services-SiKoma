@@ -2,29 +2,8 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 const { generateUniqueUsername } = require('../helpers/UsernameHelper');  
+ 
 
-// Create User
-exports.createUser = async (req, res) => {
-  try {
-    const { email, password, username, ...otherData } = req.body;
-    
-    const finalUsername = username || await generateUniqueUsername();
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
-      email,
-      password: hashedPassword,
-      username: finalUsername,
-      ...otherData,
-    });
-
-    sendSuccessResponse(res, 201, 'User created successfully', newUser);
-  } catch (error) {
-    sendErrorResponse(res, 500, 'Error creating user', error.message);
-  }
-};
-  
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll();

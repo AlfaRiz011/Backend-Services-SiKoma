@@ -4,27 +4,27 @@ const User = require('./User');
 const Post = require('./Post'); 
 
 const Like = sequelize.define('Like', {
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'userId',
-    },
+  user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: User,
+          key: 'user_id',
+      },
+      onDelete: 'CASCADE',
+      primaryKey: true,
   },
-  postId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Post,
-      key: 'postId',
-    },
+  post_id: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: Post,
+          key: 'post_id',
+      },
+      onDelete: 'CASCADE',
+      primaryKey: true,
   },
 }, {
-  timestamps: false, 
+  tableName: 'Like',
+  timestamps: false,
 });
-
-Like.belongsTo(User, { foreignKey: 'userId' });
-Like.belongsTo(Post, { foreignKey: 'postId' });
 
 module.exports = Like;

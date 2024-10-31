@@ -1,29 +1,34 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/Database');
 
-const Register = sequelize.define('Register', {
+const Otp = sequelize.define('Otp', {
+    otp_id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    otp: {
-        type: DataTypes.STRING,  
+    otp_code: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-    verified: {
+    verified:{
         type: DataTypes.BOOLEAN,
-        defaultValue: false,  
     },
-    createdAt: {
+    expires_at: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        allowNull: false,
     },
 }, {
-  timestamps: false, 
+    tableName: 'Otp',
+    timestamps: false,
 });
 
-module.exports = Register;
+module.exports = Otp;

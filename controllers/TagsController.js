@@ -20,3 +20,11 @@ exports.getTagsByPostId = async (req, res) => {
     return sendErrorResponse(res, 500, 'Failed to retrieve tags', error.message);
   }
 };
+
+exports.getAllTag = async (req, res) => {
+  
+}
+
+exports.postTagPost= async (req, res) => {
+  
+}

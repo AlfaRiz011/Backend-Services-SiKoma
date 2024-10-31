@@ -34,6 +34,19 @@ exports.getAdminById = async (req, res) => {
     }
 };
 
+exports.getAdminByName = async (req,res) => {
+    const { organization_name } = req.body;
+    try {
+        const admin = await Admin.findOne({where: { organization_name }});
+        if (!admin) {
+            return sendErrorResponse(res, 404, 'Admin not found');
+        }
+        sendSuccessResponse(res, 200, 'Admin fetched successfully', admin);
+    } catch (error) {
+        sendErrorResponse(res, 500, 'Error updating admin', error.message);
+    }
+}
+
 // Update Admin
 exports.updateAdmin = async (req, res) => {
     try {
@@ -47,17 +60,4 @@ exports.updateAdmin = async (req, res) => {
         sendErrorResponse(res, 500, 'Error updating admin', error.message);
     }
 };
-
-// Delete Admin
-exports.deleteAdmin = async (req, res) => {
-    try {
-        const admin = await Admin.findByPk(req.params.id); 
-        if (!admin) {
-            return sendErrorResponse(res, 404, 'Admin not found');
-        }
-        await admin.destroy(); 
-        sendSuccessResponse(res, 200, 'Admin deleted successfully');
-    } catch (error) {
-        sendErrorResponse(res, 500, 'Error deleting admin', error.message);
-    }
-};
+ 

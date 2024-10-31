@@ -8,5 +8,4 @@ router.post('/request-otp', RegisterController.requestOtp);
 
 router.post('/verify-otp', RegisterController.verifyOtp);
 
-
 module.exports = router;

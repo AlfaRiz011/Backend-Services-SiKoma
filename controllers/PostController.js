@@ -34,6 +34,11 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+//Get Post by Admin
+exports.getPostByAdminId = async (req, res) => {
+  
+}
+
 // Get Posts by Event
 exports.getPostsEvents = async (req, res) => {
   const post = await Post.findAll({where: {type: 'Events'}}); 
@@ -44,6 +49,21 @@ exports.getPostsEvents = async (req, res) => {
     return sendErrorResponse(res, 500, 'Failed to retrieve posts', error.message);
   }
 };
+
+//Get Posts Event Admin
+exports.getPostsEventsAdmin = async (req, res) => {
+  
+}
+
+//Get Recommendation Post
+exports.getRecommendationPost = async (req, res) => {
+  
+}
+
+//Like Post
+exports.likePost = async (req, res) => {
+  
+}
 
 // Update Post
 exports.updatePost = async (req, res) => {
@@ -59,16 +79,9 @@ exports.updatePost = async (req, res) => {
   }
 };
 
-// Delete Post
+
+//Delete Post
 exports.deletePost = async (req, res) => {
-  try {
-    const deletedPost = await Post.findOne({ where: { postId: req.params.postId } });
-    if (!deletedPost) {
-      return sendErrorResponse(res, 404, 'Post not found');
-    }
-    await deletedPost.destroy(); 
-    return sendSuccessResponse(res, 200, 'Post deleted successfully');
-  } catch (error) {
-    return sendErrorResponse(res, 500, 'Failed to delete post', error.message);
-  }
-};
+  
+}
+

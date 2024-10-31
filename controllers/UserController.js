@@ -24,7 +24,26 @@ exports.getUserById = async (req, res) => {
         sendErrorResponse(res, 500, 'Error fetching user', error.message);
     }
 };
- 
+
+exports.getUserByEmail = async(req, res) => {
+    const { email } = req.body;
+
+    if(!email){
+        return sendErrorResponse(res, 400, 'Email Query Needed');
+    }
+    
+    try{
+        const user = await User.findOne({where : { email }});
+
+        if(!user){
+            return sendErrorResponse(res, 400, 'User not found');
+        }
+        sendSuccessResponse(res, 200, 'User fetched successfully', user);
+    } catch(error) {
+        sendErrorResponse(res, 500, 'Error fetching user', error.message);
+    }
+};
+
 exports.updateUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
@@ -33,22 +52,10 @@ exports.updateUser = async (req, res) => {
         }
 
         await user.update(req.body);
+
         sendSuccessResponse(res, 200, 'User updated successfully', user);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error updating user', error.message);
     }
 };
- 
-exports.deleteUser = async (req, res) => {
-    try {
-        const user = await User.findByPk(req.params.id);
-        if (!user) {
-            return sendErrorResponse(res, 404, 'User not found');
-        }
 
-        await user.destroy();
-        sendSuccessResponse(res, 204, 'User deleted successfully');
-    } catch (error) {
-        sendErrorResponse(res, 500, 'Error deleting user', error.message);
-    }
-};

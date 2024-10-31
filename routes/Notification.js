@@ -3,18 +3,21 @@ const router = express.Router();
 const notificationController = require('../controllers/notificationController');
 
 // Create Notification
-router.post('/', notificationController.createNotification);
+router.post('/:userId', notificationController.createNotification);
 
-// Get All Notifications
-router.get('/', notificationController.getAllNotifications);
+// Get Post Notifications
+router.get('/', notificationController.getPostNotifications);
 
-// Get Notification by ID
-router.get('/:notificationId', notificationController.getNotificationById);
+// Get Event Notifications
+router.get('/', notificationController.getEventNotifications);
 
-// Update Notification
-router.put('/:notificationId', notificationController.updateNotification);
+// Get Notifications by ID
+router.get('/:notifID', notificationController.getNotificationById); 
 
-// Delete Notification
-router.delete('/:notificationId', notificationController.deleteNotification);
+// Update Read All Notification
+router.patch('/:userId', notificationController.updateAllNotification);
+
+// Update Read Notification
+router.patch('/', notificationController.updateOneNotification);
 
 module.exports = router;

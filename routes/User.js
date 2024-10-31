@@ -8,10 +8,10 @@ router.get('/', UserController.getAllUsers);
 // Get User by ID
 router.get('/:id', UserController.getUserById);
 
+// Get User by Email
+router.get('/email', UserController.getUserByEmail);
+
 // Update User
 router.put('/:id', UserController.updateUser);
-
-// Delete User
-router.delete('/:id', UserController.deleteUser);
 
 module.exports = router;

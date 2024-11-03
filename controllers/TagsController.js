@@ -7,7 +7,7 @@ const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseH
 exports.createTag = async (req, res) => {
   const { tag_name } = req.body;
   try {
-    const newTag = await Tags.create({ name: tag_name }); 
+    const newTag = await Tags.create({ tag_name: tag_name }); 
     return sendSuccessResponse(res, 201, 'Tag created successfully', newTag);
   } catch (error) {
     return sendErrorResponse(res, 400, 'Failed to create tag', error.message);

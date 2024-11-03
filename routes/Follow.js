@@ -3,15 +3,15 @@ const router = express.Router();
 const followController = require('../controllers/followController');
 
 // follow Admin
-router.post('/:userId', followController.followAdmin);
+router.post('/admin/:userId', followController.followAdmin);
 
 // follow Tag
-router.post('/:userId', followController.followTag);
+router.post('/tag/:userId', followController.followTag);
 
 // Get All follow Admin
-router.post('/admin/:userId', followController.getFollowAdmin);
+router.get('/admin/:userId', followController.getFollowAdmin);
 
 // Get All follow Tag
-router.post('/tag/:userId', followController.getFollowTag);
+router.get('/tag/:userId', followController.getFollowTag);
 
 module.exports = router;

@@ -24,7 +24,7 @@ const Post = sequelize.define('Post', {
       },
   },
   type: {
-      type: DataTypes.ENUM('information', 'event'),
+      type: DataTypes.STRING,
       allowNull: false,
   },
   event_name: {

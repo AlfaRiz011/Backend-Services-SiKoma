@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const eventController = require('../controllers/eventController');
+const eventController = require('../controllers/EventController');
 
 //Get Event Participant
-router.get('/', eventController.getAllParticipant);
+router.get('/:postId', eventController.getAllParticipant);
 
 //Participate Event
-router.get('/:postId', eventController.postParticipant);
+router.post('/:postId', eventController.postParticipant);
 
 //Delete Event Participant
 router.delete('/:postId', eventController.deleteParticipant);

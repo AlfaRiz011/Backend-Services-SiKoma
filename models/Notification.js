@@ -26,8 +26,7 @@ const UserNotification = sequelize.define('UserNotification', {
       onDelete: 'CASCADE',
   },
   is_active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      type: DataTypes.BOOLEAN
   },
 }, {
   tableName: 'UserNotification',

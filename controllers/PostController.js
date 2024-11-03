@@ -2,29 +2,64 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Admin = require('../models/Admin');
 const PostRecommendation = require('../models/PostRecommendation');
+const Notification = require('../models/Notification');
 const Like = require('../models/Like');
+const FollowOrganization = require('../models/FollowAdmin');
+const PostTag = require('../models/PostTag');
 const path = require('path');
 const fs = require('fs');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 
-// Create Post
 exports.createPost = async (req, res) => {
   try {
     const { description, type, event_name, event_date, event_time } = req.body;
-  
+    const adminId = req.params.adminId;
+ 
     const newPost = await Post.create({
       description,
-      admin_id: req.params.adminId,
+      admin_id: adminId,
       type,
       event_name: type === 'event' ? event_name : null,
       event_date: type === 'event' ? event_date : null,
       event_time: type === 'event' ? event_time : null,
       image: req.file ? req.file.filename : null, 
     });
+ 
+    const postTags = await PostTag.findAll({
+      where: { post_id: newPost.post_id },
+      attributes: ['tag_id'],
+    });
+    const tagIds = postTags.map(tag => tag.tag_id); 
 
-    return sendSuccessResponse(res, 201, 'Post created successfully', newPost);
+    const adminFollowers = await FollowOrganization.findAll({
+      where: { admin_id: adminId },
+      attributes: ['user_id'],
+    });
+    const adminFollowerIds = adminFollowers.map(follower => follower.user_id);
+ 
+    let tagFollowerIds = [];
+    if (tagIds.length > 0) {
+      const tagFollowers = await FollowTag.findAll({
+        where: { tag_id: tagIds },
+        attributes: ['user_id'],
+      });
+      tagFollowerIds = tagFollowers.map(follower => follower.user_id);
+    }
+ 
+    const allUserIds = [...new Set([...adminFollowerIds, ...tagFollowerIds])];
+ 
+    const notifications = allUserIds.map(userId => ({
+      user_id: userId,
+      post_id: newPost.post_id,
+      is_active: false,  
+    }));
+
+    await Notification.bulkCreate(notifications);
+
+    return sendSuccessResponse(res, 201, 'Post created and notifications sent successfully', newPost);
+
   } catch (error) {
-    return sendErrorResponse(res, 400, 'Failed to create post', error.message);
+    return sendErrorResponse(res, 400, 'Failed to create post and send notifications', error.message);
   }
 };
 

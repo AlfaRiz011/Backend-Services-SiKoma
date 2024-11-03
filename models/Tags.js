@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../database/Database');
-const Post = require('./Post'); 
-
+const { sequelize } = require('../database/Database');  
 const Tag = sequelize.define('Tag', {
   tag_id: {
       type: DataTypes.INTEGER,
@@ -16,5 +14,5 @@ const Tag = sequelize.define('Tag', {
   tableName: 'Tag',
   timestamps: false,
 });
-
+ 
 module.exports = Tag;

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const postController = require('../controllers/PostController');
+const upload = require('../middlewares/uploadMiddleware');
 
 // Create Post
-router.post('/:adminId', postController.createPost);
+router.post('/:adminId', upload.single('image'), postController.createPost);
 
 // Delete Post
 router.delete('/:postId', postController.deletePost);
@@ -15,21 +16,21 @@ router.get('/', postController.getAllPosts);
 router.get('/:postId', postController.getPostById);
 
 // Get Post by AdminID
-router.get('/:adminId', postController.getPostByAdminId);
+router.get('/admin/:adminId', postController.getPostByAdminId);
 
 // Get Recommendation Post
 router.get('/recommendation/:id', postController.getRecommendationPost);
 
 // Get Posts by Type (Events)
-router.get('/', postController.getPostsEvents);
+router.get('/event/event', postController.getPostsEvents);
 
 // Get Posts by Type (Events) and Admin ID
-router.get('/', postController.getPostsEventsAdmin);
+router.get('/event/admin/:adminId', postController.getPostsEventsAdmin);
 
 // Update Post
-router.put('/:postId', postController.updatePost);
+router.put('/:postId', upload.single('image'), postController.updatePost);
 
 // Like Post
-router.post('/:userId', postController.likePost);
+router.post('/like/:userId', postController.likePost);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/Database');
 const User = require('./User');
-const Tags = require('./Tags');
+const Tag = require('./Tags');
 
 const FollowTag = sequelize.define('FollowTag', {
   user_id: {
@@ -16,7 +16,7 @@ const FollowTag = sequelize.define('FollowTag', {
   tag_id: {
       type: DataTypes.INTEGER,
       references: {
-          model: Tags,
+          model: Tag,
           key: 'tag_id',
       },
       onDelete: 'CASCADE',
@@ -26,5 +26,8 @@ const FollowTag = sequelize.define('FollowTag', {
   tableName: 'FollowTag',
   timestamps: false,
 });
+
+FollowTag.belongsTo(User, { foreignKey: 'user_id' });
+FollowTag.belongsTo(Tag, { foreignKey: 'tag_id' });
 
 module.exports = FollowTag;

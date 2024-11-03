@@ -48,6 +48,5 @@ Post.belongsTo(Admin, {
   foreignKey: 'admin_id',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
-});
-
+}); 
 module.exports = Post;

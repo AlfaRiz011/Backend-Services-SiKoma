@@ -27,4 +27,14 @@ const EventParticipant = sequelize.define('EventParticipant', {
     timestamps: false,
 });
 
+EventParticipant.belongsTo(User, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+EventParticipant.belongsTo(Post, {
+    foreignKey: 'post_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
 module.exports = EventParticipant;

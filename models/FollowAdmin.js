@@ -27,4 +27,14 @@ const FollowOrganization = sequelize.define('FollowOrganization', {
   timestamps: false,
 });
 
+FollowOrganization.belongsTo(Admin, {
+  foreignKey: 'admin_id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+FollowOrganization.belongsTo(User, {
+  foreignKey: 'user_id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
 module.exports = FollowOrganization;

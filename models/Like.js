@@ -27,4 +27,15 @@ const Like = sequelize.define('Like', {
   timestamps: false,
 });
 
+Like.belongsTo(User, {
+  foreignKey: 'user_id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+Like.belongsTo(Post, {
+  foreignKey: 'post_id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+
 module.exports = Like;

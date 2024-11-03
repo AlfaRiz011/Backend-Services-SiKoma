@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../database/Database');
-
+const { sequelize } = require('../database/Database'); 
 const Admin = sequelize.define('Admin', {
   admin_id: {
       type: DataTypes.INTEGER,
@@ -33,5 +32,5 @@ const Admin = sequelize.define('Admin', {
   tableName: 'Admin',
   timestamps: false,
 });
-
+ 
 module.exports = Admin;

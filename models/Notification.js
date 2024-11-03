@@ -34,4 +34,14 @@ const UserNotification = sequelize.define('UserNotification', {
   timestamps: false,
 });
 
+UserNotification.belongsTo(User, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+UserNotification.belongsTo(Post, {
+    foreignKey: 'post_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
 module.exports = UserNotification;

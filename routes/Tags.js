@@ -6,12 +6,12 @@ const tagController = require('../controllers/TagsController');
 router.post('/', tagController.createTag);
 
 // Get All Tag
-router.post('/', tagController.getAllTag);
+router.get('/', tagController.getAllTags);
 
 // Route untuk mendapatkan semua tag berdasarkan postId
 router.get('/:postId', tagController.getTagsByPostId);
 
 // Post TagPost
-router.get('/:postId', tagController.postTagPost);
+router.post('/:postId', tagController.postTagPost);
 
 module.exports = router;

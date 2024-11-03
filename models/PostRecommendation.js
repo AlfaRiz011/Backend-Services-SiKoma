@@ -27,4 +27,16 @@ const PostRecommendation = sequelize.define('PostRecommendation', {
     timestamps: false,
 });
 
+PostRecommendation.belongsTo(User, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+PostRecommendation.belongsTo(Post, {
+    foreignKey: 'post_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+
+
 module.exports = PostRecommendation;

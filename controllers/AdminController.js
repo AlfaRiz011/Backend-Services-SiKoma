@@ -1,4 +1,6 @@
 const Admin = require('../models/Admin'); 
+const path = require('path');
+const fs = require('fs');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 
 // Create Admin
@@ -61,3 +63,41 @@ exports.updateAdmin = async (req, res) => {
     }
 };
  
+exports.uploadAdminImage = async (req, res) => {
+    const adminId = req.params.id;
+
+    try {
+        const admin = await Admin.findByPk(adminId);
+        if (!admin) {
+            return sendErrorResponse(res, 404, 'Admin not found');
+        }
+  
+        if (admin.profile_pic) {
+            const oldPicPath = path.join(__dirname, '../uploads/admin/', admin.profile_pic);
+
+            if (fs.existsSync(oldPicPath)) {
+                fs.unlink(oldPicPath, (err) => {
+                    if (err) {
+                        console.error('Error deleting old profile picture:', err);
+                    } else {
+                        console.log('Old profile picture deleted successfully');
+                    }
+                });
+            } else {
+                console.warn('Old profile picture not found, skipping deletion');
+            }
+        }
+
+        if (!req.file) {
+            admin.profile_pic = "";   
+        } else {
+            admin.profile_pic = req.file.filename; 
+        }
+       
+        await admin.save();
+
+        sendSuccessResponse(res, 200, 'Profile picture updated successfully', admin);
+    } catch (error) {
+        sendErrorResponse(res, 500, 'Error updating profile picture', error.message);
+    }
+};

@@ -27,4 +27,14 @@ const PostTag = sequelize.define('PostTag', {
     timestamps: false,
 });
 
+PostTag.belongsTo(Post, {
+    foreignKey: 'post_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
+PostTag.belongsTo(Tag, {
+    foreignKey: 'tag_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  });
 module.exports = PostTag;

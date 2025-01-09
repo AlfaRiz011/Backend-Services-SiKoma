@@ -37,7 +37,7 @@ exports.getAdminById = async (req, res) => {
 };
 
 exports.getAdminByName = async (req,res) => {
-    const { organization_name } = req.body;
+    const { organization_name } = req.query;
     try {
         const admin = await Admin.findOne({where: { organization_name }});
         if (!admin) {

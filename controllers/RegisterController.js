@@ -71,7 +71,7 @@ exports.requestOtp = async (req, res) => {
             expires_at: new Date(Date.now() + 10 * 60 * 1000)  
         });  
 
-        sendSuccessResponse(res, 201, 'OTP sent to your email. Please verify to complete registration.', newRegister);
+        sendSuccessResponse(res, 201, 'OTP sent to your email. Please verify to complete registration.', newRegister,);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error request otp', error.message);
     }
@@ -92,10 +92,12 @@ exports.verifyOtp = async (req, res) => {
         }
 
         await registerUser.update({ verified: true });  
+
+        const hashedPassword = await bcrypt.hash(registerUser.password, 10);
         
         sendSuccessResponse(res, 200, 'Account verified successfully', {
             email: registerUser.email,
-            password: registerUser.password   
+            password: hashedPassword
         });
     } catch (error) {
         sendErrorResponse(res, 500, 'Error verifying OTP', error.message);

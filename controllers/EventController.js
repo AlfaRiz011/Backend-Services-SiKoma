@@ -24,7 +24,7 @@ exports.getAllParticipant = async (req, res) => {
 // Participate in Event
 exports.postParticipant = async (req, res) => { 
     const postId = req.params.postId;
-    const { user_id } = req.body;
+    const { user_id } = req.query;
 
     try {        
         const existingParticipant = await Event.findOne({
@@ -45,7 +45,7 @@ exports.postParticipant = async (req, res) => {
 // Delete Event Participant
 exports.deleteParticipant = async (req, res) => {
     const postId = req.params.postId;
-    const { user_id } = req.body;
+    const { user_id } = req.query;
 
     try {
         const participant = await Event.findOne({

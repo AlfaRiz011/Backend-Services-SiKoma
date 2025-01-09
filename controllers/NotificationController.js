@@ -5,7 +5,7 @@ const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseH
 
 // Create Notification
 exports.createNotification = async (req, res) => {
-  const { post_id } = req.body;  
+  const { post_id } = req.query;  
   const userId = req.params.userId; 
 
   try {

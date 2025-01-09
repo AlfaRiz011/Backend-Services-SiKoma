@@ -43,7 +43,7 @@ exports.getAllTags = async (req, res) => {
 
 // Add Tag to Post
 exports.postTagPost = async (req, res) => { 
-  const { tag_name } = req.body;
+  const { tag_name } = req.query;
 
   try {
     
@@ -56,6 +56,20 @@ exports.postTagPost = async (req, res) => {
     const tag_id = tag.tag_id;
  
     const newPostTags = await PostTag.create({ post_id: req.params.postId, tag_id });
+ 
+     const tagFollowers = await FollowTag.findAll({
+      where: { tag_id },
+      attributes: ['user_id'],
+    });
+    const tagFollowerIds = tagFollowers.map(follower => follower.user_id);
+ 
+    const notifications = tagFollowerIds.map(userId => ({
+      user_id: userId,
+      post_id: req.params.postId,
+      is_active: true,  
+    }));
+ 
+    await Notification.bulkCreate(notifications);
 
     return sendSuccessResponse(res, 201, 'Tag added to post successfully', newPostTags);
   } catch (error) {

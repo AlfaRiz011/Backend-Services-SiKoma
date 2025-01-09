@@ -24,34 +24,17 @@ exports.createPost = async (req, res) => {
       event_time: type === 'event' ? event_time : null,
       image: req.file ? req.file.filename : null, 
     });
- 
-    const postTags = await PostTag.findAll({
-      where: { post_id: newPost.post_id },
-      attributes: ['tag_id'],
-    });
-    const tagIds = postTags.map(tag => tag.tag_id); 
 
     const adminFollowers = await FollowOrganization.findAll({
       where: { admin_id: adminId },
       attributes: ['user_id'],
     });
     const adminFollowerIds = adminFollowers.map(follower => follower.user_id);
- 
-    let tagFollowerIds = [];
-    if (tagIds.length > 0) {
-      const tagFollowers = await FollowTag.findAll({
-        where: { tag_id: tagIds },
-        attributes: ['user_id'],
-      });
-      tagFollowerIds = tagFollowers.map(follower => follower.user_id);
-    }
- 
-    const allUserIds = [...new Set([...adminFollowerIds, ...tagFollowerIds])];
- 
-    const notifications = allUserIds.map(userId => ({
+      
+    const notifications = adminFollowerIds.map(userId => ({
       user_id: userId,
       post_id: newPost.post_id,
-      is_active: false,  
+      is_active: true,  
     }));
 
     await Notification.bulkCreate(notifications);
@@ -187,7 +170,7 @@ exports.getRecommendationPost = async (req, res) => {
 
 // Like Post
 exports.likePost = async (req, res) => {
-  const { post_id } = req.body;
+  const { post_id } = req.query;
 
   try {
     const post = await Post.findOne({ where: { post_id } });
@@ -205,6 +188,31 @@ exports.likePost = async (req, res) => {
     return sendErrorResponse(res, 500, 'Failed to like post', error.message);
   }
 };  
+
+// Unlike Post
+exports.unlikePost = async (req, res) => {
+  const { post_id } = req.query;
+
+  try { 
+    const likePost = await Like.findOne({
+      where: {
+        user_id: req.params.userId,
+        post_id,
+      },
+    });
+
+    if (!likePost) {
+      return sendErrorResponse(res, 404, 'Like not found for this post');
+    }
+ 
+    await likePost.destroy();
+
+    return sendSuccessResponse(res, 200, 'Post unliked successfully');
+  } catch (error) {
+    return sendErrorResponse(res, 500, 'Failed to unlike post', error.message);
+  }
+};
+
  
 exports.updatePost = async (req, res) => { 
 

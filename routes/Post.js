@@ -22,7 +22,7 @@ router.get('/admin/:adminId', postController.getPostByAdminId);
 router.get('/recommendation/:id', postController.getRecommendationPost);
 
 // Get Posts by Type (Events)
-router.get('/event/event', postController.getPostsEvents);
+router.get('/event', postController.getPostsEvents);
 
 // Get Posts by Type (Events) and Admin ID
 router.get('/event/admin/:adminId', postController.getPostsEventsAdmin);
@@ -32,5 +32,8 @@ router.put('/:postId', upload.single('image'), postController.updatePost);
 
 // Like Post
 router.post('/like/:userId', postController.likePost);
+
+// Delete Like
+router.delete('/unlike/:userId', postController.unlikePost);
 
 module.exports = router;

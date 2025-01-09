@@ -36,7 +36,7 @@ exports.getFollowTag = async (req, res) => {
 // Follow Admin
 exports.followAdmin = async (req, res) => {
     const userId = req.params.userId;
-    const { admin_id } = req.body;
+    const { admin_id } = req.query;
     try {
         const newFollow = await FollowAdmin.create({ user_id: userId, admin_id });
         return sendSuccessResponse(res, 201, 'Successfully followed admin', newFollow);
@@ -47,12 +47,64 @@ exports.followAdmin = async (req, res) => {
 
 //Follow Tag
 exports.followTag = async (req, res) => {    
-    const userId = req.params.userId;
-    const { tag_id } = req.body;
+    const { userId }= req.params.userId;
+    const { tag_id } = req.query;
     try {
         const newFollow = await FollowTag.create({ user_id: userId, tag_id });
         return sendSuccessResponse(res, 201, 'Successfully followed admin', newFollow);
     } catch (error) {
         return sendErrorResponse(res, 500, 'Failed to follow admin', error.message);
+    }
+};
+
+//unfollow Admin
+exports.unfollowAdmin = async(req,res) => {
+    const userId  = req.params.userId;
+    const { admin_id } = req.query;
+
+    try {
+        
+        const follower = await FollowAdmin.findOne({
+            where:{
+                user_id: userId,
+                admin_id: admin_id
+            }
+        })
+
+        if(!follower){
+            return sendErrorResponse(res, 404, 'User not found', error.message);
+        }
+
+        await follower.destroy()
+
+        return sendSuccessResponse(res, 200, 'Admin unfollow successfully');
+    } catch (error) {
+        return sendErrorResponse(res, 500, 'Failed to unfollow', error.message);
+    }
+};
+
+//unfollow Tag
+exports.unfollowTag = async (req,res) => {    
+    const userId = req.params.userId;
+    const { tag_id } = req.query;
+
+    try {
+        
+        const follower = await FollowTag.findOne({
+            where:{
+                user_id: userId,
+                tag_id: tag_id
+            }
+        })
+
+        if(!follower){
+            return sendErrorResponse(res, 404, 'User not found', error.message);
+        }
+
+        await follower.destroy()
+
+        return sendSuccessResponse(res, 200, 'Tag unfollow successfully');
+    } catch (error) {
+        return sendErrorResponse(res, 500, 'Failed to unfollow', error.message);
     }
 };

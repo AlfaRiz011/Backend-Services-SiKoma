@@ -47,18 +47,25 @@ const sendErrorResponse = (res, statusCode, message, error = null) => {
  * @param {string} token - JWT token
  * @param {Object} user - User object
  */
-const sendSuccessResponseLogin = (res, statusCode, message, token, user) => {
+const sendSuccessResponseLogin = (res, statusCode, message, token, account) => {
     const response = {
         status: 'success',
         message, 
     };
-
+ 
     const data = {
         token,
-        user,
     };
+ 
+    if (account.user_id) {   
+        data.user = account;  
+    } else if (account.admin_id) {   
+        data.admin = account;   
+    }
 
-    response.data = data
+    data.role = account.user_id ? 'user' : 'admin';
+
+    response.data = data;
 
     res.status(statusCode).json(response);
 };

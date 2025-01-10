@@ -33,7 +33,13 @@ router.put('/:postId', upload.single('image'), postController.updatePost);
 // Like Post
 router.post('/like/:userId', postController.likePost);
 
-// Delete Like
+// unlike Post
 router.delete('/unlike/:userId', postController.unlikePost);
+
+// Get Like Post
+router.get('/like/:postId', postController.getLikePost);
+
+// toggle Like Post
+router.post('/toggleLike/:userId', postController.toggleLikePost);
 
 module.exports = router;

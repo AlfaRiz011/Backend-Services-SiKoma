@@ -250,6 +250,55 @@ exports.updatePost = async (req, res) => {
   }
 };
 
+exports.getLikePost = async (req, res) =>{
+  const { postId } = req.params;
+
+  try {
+    const likePosts = await Like.findAll({ 
+      where: {post_id : postId},
+      include:{
+        model: Post,
+        model: User,
+      }
+    }); 
+    
+    return sendSuccessResponse(res, 200, 'Event posts retrieved successfully', likePosts);
+  } catch (error) {
+    return sendErrorResponse(res, 500, 'Failed to retrieve post', error.message);
+  }
+}
+
+exports.toggleLikePost = async (req, res) => {
+  const { post_id } = req.query; 
+  const { userId } = req.params;  
+
+  try { 
+    const post = await Post.findOne({ where: { post_id } });
+    if (!post) {
+      return sendErrorResponse(res, 404, 'Post not found');
+    }
+ 
+    const existingLike = await Like.findOne({
+      where: {
+        user_id: userId,
+        post_id,
+      },
+    });
+
+    if (existingLike) { 
+      await existingLike.destroy();
+      return sendSuccessResponse(res, 200, 'Post unliked successfully');
+    } else { 
+      const newLike = await Like.create({
+        user_id: userId,
+        post_id,
+      });
+      return sendSuccessResponse(res, 200, 'Post liked successfully', newLike);
+    }
+  } catch (error) {
+    return sendErrorResponse(res, 500, 'Failed to toggle like status', error.message);
+  }
+};
 
 // Delete Post
 exports.deletePost = async (req, res) => {

@@ -5,6 +5,9 @@ const eventController = require('../controllers/EventController');
 //Get Event Participant
 router.get('/:postId', eventController.getAllParticipant);
 
+//Get Event Participant by UserId
+router.get('/:userId', eventController.getEventPostByUserId);
+
 //Participate Event
 router.post('/:postId', eventController.postParticipant);
 

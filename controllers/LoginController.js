@@ -13,12 +13,12 @@ exports.login = async (req, res) => {
  
         const account = user || admin;
         if (!account) {
-            return sendErrorResponse(res, 401, 'Invalid credentials');
+            return sendErrorResponse(res, 401, 'No account found');
         }
  
         const isMatch = await bcrypt.compare(password, account.password);
         if (!isMatch) {
-            return sendErrorResponse(res, 401, 'Invalid credentials');
+            return sendErrorResponse(res, 401, 'Password Invalid');
         }
  
         const id = user ? account.user_id : account.admin_id;

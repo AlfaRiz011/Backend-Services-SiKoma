@@ -1,6 +1,9 @@
 const Tags = require('../models/Tags'); 
+const FollowTag = require('../models/FollowTag');
 const Post = require('../models/Post'); 
+const Notification = require('../models/Notification'); 
 const PostTag = require('../models/PostTag');
+
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 
 // Create Tags
@@ -43,10 +46,10 @@ exports.getAllTags = async (req, res) => {
 
 // Add Tag to Post
 exports.postTagPost = async (req, res) => { 
-  const { tag_name } = req.query;
+  const { tag_name } = req.body;
 
   try {
-    
+
     let tag = await Tags.findOne({ where: { tag_name } });
  
     if (!tag) {

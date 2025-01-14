@@ -11,7 +11,7 @@ exports.getFollowAdmin = async (req, res) => {
     try {
         const listAdmin = await FollowAdmin.findAll({
             where: { user_id: userId },  
-            include: { model: Admin }
+            include: [{ model: Admin }]
         });
         return sendSuccessResponse(res, 200, 'Followed admins retrieved successfully', listAdmin);
     } catch (error) {
@@ -25,7 +25,7 @@ exports.getFollowTag = async (req, res) => {
     try {
         const listTags = await FollowTag.findAll({
             where: { user_id: userId },  
-            include: { model: Tags } 
+            include: [{ model: Tags }]
         });
         return sendSuccessResponse(res, 200, 'Followed tags retrieved successfully', listTags);
     } catch (error) {

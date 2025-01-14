@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin'); 
 const path = require('path');
 const fs = require('fs');
@@ -6,7 +7,16 @@ const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseH
 // Create Admin
 exports.createAdmin = async (req, res) => {
     try {
-        const newAdmin = await Admin.create(req.body); 
+        const { email, password, ...otherData } = req.body;
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const newAdmin = await Admin.create({
+            email,
+            password: hashedPassword,
+            ...otherData,
+        });
+
         sendSuccessResponse(res, 201, 'Admin created successfully', newAdmin);
     } catch (error) {
         sendErrorResponse(res, 500, 'Error creating admin', error.message);

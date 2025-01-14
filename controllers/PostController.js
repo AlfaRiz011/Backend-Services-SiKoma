@@ -12,14 +12,14 @@ const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseH
 
 exports.createPost = async (req, res) => {
   try {
-    const { description, type, event_name, event_date, event_time } = req.body;
+    const { description, type, event_location, event_date, event_time } = req.body;
     const adminId = req.params.adminId;
  
     const newPost = await Post.create({
       description,
       admin_id: adminId,
       type,
-      event_name: type === 'event' ? event_name : null,
+      event_location: type === 'event' ? event_location : null,
       event_date: type === 'event' ? event_date : null,
       event_time: type === 'event' ? event_time : null,
       image: req.file ? req.file.filename : null, 
@@ -50,9 +50,9 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.findAll({
-      include: {
+      include: [{
         model: Admin
-      },
+      }],
     });
     return sendSuccessResponse(res, 200, 'Posts retrieved successfully', posts);
   } catch (error) { 
@@ -65,9 +65,9 @@ exports.getPostById = async (req, res) => {
   try {
     const post = await Post.findOne({
       where: { post_id: req.params.postId },
-      include: {
+      include: [{
         model: Admin
-      },
+      }],
     });
     if (!post) {
       return sendErrorResponse(res, 404, 'Post not found');
@@ -84,9 +84,9 @@ exports.getPostByAdminId = async (req, res) => {
   try { 
     const posts = await Post.findAll({ 
       where: { admin_id: req.params.adminId },
-      include: {
+      include: [{
         model: Admin,
-      },
+      }],
     });
     
     if (posts.length === 0) {
@@ -104,9 +104,9 @@ exports.getPostsEvents = async (req, res) => {
   try {
     const posts = await Post.findAll({ 
       where: { type: "event" },
-      include: {
+      include: [{
         model: Admin, 
-      },
+      }],
     });
     
     if (posts.length === 0) {
@@ -125,9 +125,9 @@ exports.getPostsEventsAdmin = async (req, res) => {
   try {
     const posts = await Post.findAll({
       where: { type: 'event', admin_id: req.params.adminId },
-      include: {
+      include: [{
         model: Admin,
-      },
+      }],
     });
     
     if (posts.length === 0) {
@@ -156,9 +156,9 @@ exports.getRecommendationPost = async (req, res) => {
  
       const posts = await Post.findAll({
           where: { post_id: postIds },
-          include: {
+          include: [{
             model: Admin, 
-          },
+          }],
       });
 
       return sendSuccessResponse(res, 200, 'Posts Recommendation retrieved successfully', posts);
@@ -235,7 +235,7 @@ exports.updatePost = async (req, res) => {
     const updatedData = {
       description: req.body.description || postToUpdate.description,
       type: req.body.type || postToUpdate.type,
-      event_name: req.body.event_name || postToUpdate.event_name,
+      event_location: req.body.event_location || postToUpdate.event_location,
       event_date: req.body.event_date || postToUpdate.event_date,
       event_time: req.body.event_time || postToUpdate.event_time,
       image: postToUpdate.image  
@@ -256,10 +256,10 @@ exports.getLikePost = async (req, res) =>{
   try {
     const likePosts = await Like.findAll({ 
       where: {post_id : postId},
-      include:{
+      include:[{
         model: Post,
         model: User,
-      }
+      }]
     }); 
     
     return sendSuccessResponse(res, 200, 'Event posts retrieved successfully', likePosts);

@@ -31,11 +31,15 @@ exports.getPostNotifications = async (req, res) => {
           include: [
               {
                   model: Post,
-                  where: { type: 'information' }
-              }
-          ]
-      });
-      return sendSuccessResponse(res, 200, 'Post notifications retrieved successfully', notifications);
+                  where: { type: '' },
+                  required: true,  
+              },
+            ],
+          });
+       
+          const posts = notifications.map(notification => notification.Post);
+
+      return sendSuccessResponse(res, 200, 'Post notifications retrieved successfully', posts);
   } catch (error) {
       return sendErrorResponse(res, 500, 'Failed to retrieve post notifications', error.message);
   }
@@ -51,12 +55,16 @@ exports.getEventNotifications = async (req, res) => {
           where: { user_id: userId },
           include: [
               {
-                  model: Post,
-                  where: { type: 'event' }
-              }
-          ]
-      });
-      return sendSuccessResponse(res, 200, 'Event notifications retrieved successfully', notifications);
+                model: Post,
+                where: { type: 'event' },  
+                required: true,  
+              },
+            ],
+          });
+       
+          const posts = notifications.map(notification => notification.Post);
+
+      return sendSuccessResponse(res, 200, 'Event notifications retrieved successfully', posts);
   } catch (error) {
       return sendErrorResponse(res, 500, 'Failed to retrieve event notifications', error.message);
   }

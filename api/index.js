@@ -1,16 +1,16 @@
 const express = require('express');
 const dotenv = require('dotenv'); 
-const authenticateToken = require('../middlewares/authMiddleware');  
+const authenticateToken = require('./middlewares/authMiddleware');  
 
-const userRoutes = require('../routes/User');
-const adminRoutes = require('../routes/Admin');
-const postRoutes = require('../routes/Post');
-const tagsRoutes = require('../routes/Tags');
-const notificationRoutes = require('../routes/Notification');
-const followRoutes = require('../routes/Follow');
-const eventRoutes = require('../routes/Event');
-const registerRoutes = require('../routes/Register');
-const loginRoutes = require('../routes/Login');
+const userRoutes = require('./routes/User');
+const adminRoutes = require('./routes/Admin');
+const postRoutes = require('./routes/Post');
+const tagsRoutes = require('./routes/Tags');
+const notificationRoutes = require('./routes/Notification');
+const followRoutes = require('./routes/Follow');
+const eventRoutes = require('./routes/Event');
+const registerRoutes = require('./routes/Register');
+const loginRoutes = require('./routes/Login');
 
 dotenv.config();
 

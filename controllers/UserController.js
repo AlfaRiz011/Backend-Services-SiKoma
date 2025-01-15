@@ -26,7 +26,7 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.getUserByEmail = async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
 
     if (!email) {
         return sendErrorResponse(res, 400, 'Email Query Needed');

@@ -1,4 +1,5 @@
-const User = require('../models/User');
+const User = require('../models/User'); 
+const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { sendSuccessResponseLogin, sendErrorResponse } = require('../helpers/ResponseHelper');
@@ -6,25 +7,31 @@ const { sendSuccessResponseLogin, sendErrorResponse } = require('../helpers/Resp
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
-    try {
+    try { 
         const user = await User.findOne({ where: { email } });
-
-        if (!user) {
-            return sendErrorResponse(res, 401, 'Invalid email or password');
+        const admin = await Admin.findOne({ where: { email } });
+ 
+        const account = user || admin;
+        if (!account) {
+            return sendErrorResponse(res, 401, 'No account found');
         }
-
-        const isMatch = await bcrypt.compare(password, user.password);
+ 
+        const isMatch = await bcrypt.compare(password, account.password);
         if (!isMatch) {
-            return sendErrorResponse(res, 401, 'Invalid email or password');
+            return sendErrorResponse(res, 401, 'Password Invalid');
         }
-
-        const token = jwt.sign({ id: user.userId, email: user.email }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
-
-        sendSuccessResponseLogin(res, 200, 'Login successful', token, user);
+ 
+        const id = user ? account.user_id : account.admin_id;
+        const token = jwt.sign(
+            { id, email: account.email, role: user ? 'user' : 'admin' },  
+            process.env.JWT_SECRET,
+            { expiresIn: '100h' }
+        );
+ 
+        sendSuccessResponseLogin(res, 200, 'Login successful', token, account);
     } catch (error) {
         console.error('Login error:', error);
         sendErrorResponse(res, 500, 'Server error');
     }
 };
+

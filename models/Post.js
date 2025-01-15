@@ -27,7 +27,7 @@ const Post = sequelize.define('Post', {
       type: DataTypes.STRING,
       allowNull: false,
   },
-  event_name: {
+  event_location: {
       type: DataTypes.STRING,
       allowNull: true,
   },

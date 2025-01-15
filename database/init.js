@@ -11,6 +11,7 @@ const FollowTag = require('../models/FollowTag');
 const EventParticipant = require('../models/EventParticipant');
 const PostTag = require('../models/PostTag');
 const PostRecommendation = require('../models/PostRecommendation');
+const Fcmdata = require('../models/Fcm');
 
 
 const init = async () => {
@@ -28,6 +29,7 @@ const init = async () => {
   await EventParticipant.sync();
   await PostTag.sync();
   await PostRecommendation.sync();
+  await Fcmdata.sync();
 
   console.log('All models were synchronized successfully.');
 };

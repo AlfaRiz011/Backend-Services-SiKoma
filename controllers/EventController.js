@@ -11,9 +11,10 @@ exports.getAllParticipant = async (req, res) => {
             where: {
                 post_id: req.params.postId
             },
-            include: {
-                model: User 
-            },
+            include: [{
+                model: User,
+                model: Post
+            }],
         });
         return sendSuccessResponse(res, 200, 'Event participants retrieved successfully', participants);
     } catch (error) {
@@ -21,10 +22,31 @@ exports.getAllParticipant = async (req, res) => {
     }
 };
 
+exports.getEventPostByUserId = async (req, res) => {
+    try {
+        const events = await Event.findAll({
+            where: {
+                user_id: req.params.userId
+            },
+            include: [
+                {
+                model: Post,  
+                required: true
+            }
+        ]});
+
+        const posts = events.Map(event => event.Post);
+
+        return sendSuccessResponse(res, 200, 'Event participants retrieved successfully', posts);
+    } catch (error) {
+        return sendErrorResponse(res, 500, 'Failed to retrieve event participants', error.message);
+    }
+}
+
 // Participate in Event
 exports.postParticipant = async (req, res) => { 
     const postId = req.params.postId;
-    const { user_id } = req.body;
+    const { user_id } = req.query;
 
     try {        
         const existingParticipant = await Event.findOne({
@@ -45,7 +67,7 @@ exports.postParticipant = async (req, res) => {
 // Delete Event Participant
 exports.deleteParticipant = async (req, res) => {
     const postId = req.params.postId;
-    const { user_id } = req.body;
+    const { user_id } = req.query;
 
     try {
         const participant = await Event.findOne({

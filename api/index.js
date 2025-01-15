@@ -28,4 +28,5 @@ app.use('/api/notifications', authenticateToken, notificationRoutes);
 app.use('/api/follow', authenticateToken, followRoutes);
 app.use('/api/event', authenticateToken, eventRoutes);
   
+
 module.exports = app;

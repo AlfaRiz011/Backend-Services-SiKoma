@@ -22,7 +22,7 @@ router.get('/admin/:adminId', postController.getPostByAdminId);
 router.get('/recommendation/:id', postController.getRecommendationPost);
 
 // Get Posts by Type (Events)
-router.get('/event', postController.getPostsEvents);
+router.get('/event/events', postController.getPostsEvents);
 
 // Get Posts by Type (Events) and Admin ID
 router.get('/event/admin/:adminId', postController.getPostsEventsAdmin);

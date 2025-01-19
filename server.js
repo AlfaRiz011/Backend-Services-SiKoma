@@ -1,7 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
+
 const { connectDB, sequelize } = require('./database/Database');
 const authenticateToken = require('./middlewares/authMiddleware');  
+
 const userRoutes = require('./routes/User');
 const adminRoutes = require('./routes/Admin');
 const postRoutes = require('./routes/Post');
@@ -11,8 +13,10 @@ const followRoutes = require('./routes/Follow');
 const eventRoutes = require('./routes/Event');
 const registerRoutes = require('./routes/Register');
 const loginRoutes = require('./routes/Login');
+
 dotenv.config();
 const app = express();
+
 app.use(express.json());
 const startServer = async () => {
     try {
@@ -33,8 +37,7 @@ const startServer = async () => {
 
         const PORT = process.env.PORT || 5000;
         app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-            console.log("Server running on port ${PORT}");
+            console.log(`Server running on port ${PORT}`); 
         });
     } catch (error) {
         console.error('Failed to start the server:', error.message);

@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin'); 
 const path = require('path');
 const fs = require('fs');
+const { GoogleAuth } = require('google-auth-library');
+const { google } = require('googleapis');
+const { Readable } = require('stream');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
 
 // Create Admin
@@ -81,29 +84,59 @@ exports.uploadAdminImage = async (req, res) => {
         if (!admin) {
             return sendErrorResponse(res, 404, 'Admin not found');
         }
-  
-        if (admin.profile_pic) {
-            const oldPicPath = path.join(__dirname, '../uploads/admin/', admin.profile_pic);
 
-            if (fs.existsSync(oldPicPath)) {
-                fs.unlink(oldPicPath, (err) => {
-                    if (err) {
-                        console.error('Error deleting old profile picture:', err);
-                    } else {
-                        console.log('Old profile picture deleted successfully');
-                    }
-                });
-            } else {
-                console.warn('Old profile picture not found, skipping deletion');
+        const auth = new GoogleAuth({
+            keyFile: process.env.SERVICE_ACCOUNT_FILE,
+            scopes: process.env.SCOPES,
+        });
+
+        const drive = google.drive({ version: 'v3', auth: auth });
+ 
+        if (admin.profile_pic) {
+            const oldFileId = admin.profile_pic;
+            try {
+                await drive.files.delete({ fileId: oldFileId });
+                console.log('Old profile picture deleted successfully');
+            } catch (err) {
+                console.error('Error deleting old profile picture:', err);
             }
         }
-
+ 
         if (!req.file) {
-            admin.profile_pic = "";   
+            admin.profile_pic = "";  
         } else {
-            admin.profile_pic = req.file.filename; 
+            const file = req.file;
+            const stream = Readable.from(file && file.buffer ? [file.buffer] : []);
+
+            const fileMetadata = {
+                name: `${new Date().getTime()}-${file.originalname}`,
+                parents: [process.env.DESTINATION_FOLDER_ADMINS_ID],
+            };
+
+            const media = {
+                mimeType: file.mimetype,
+                body: stream,
+            };
+
+            const response = await drive.files.create({
+                requestBody: fileMetadata,
+                media: media,
+                fields: 'id, webViewLink',
+            });
+
+            const fileId = response.data.id;
+ 
+            await drive.permissions.create({
+                fileId: fileId,
+                requestBody: {
+                    role: 'writer',
+                    type: 'anyone',
+                },
+            });
+ 
+            admin.profile_pic = process.env.CONST_DRIVE_LINK + fileId;
         }
-       
+
         await admin.save();
 
         sendSuccessResponse(res, 200, 'Profile picture updated successfully', admin);

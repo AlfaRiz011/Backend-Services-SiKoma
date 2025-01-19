@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sikoma-ea76e",
+  "private_key_id": "fc64e347709431714c90231e200c26c40bbdd7a7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCmw8Hm5aGLxIG+\nXmGFUuBq2T6NVbASdxmxSLufLcfz9uDZ93SxWMeWUlkme6610wa6qYqpJz1Zcv8k\ncIg9OfKC1OU1TB5kgIHJntd5GpRKhDQMz6Un0aUNh8vGlBP7SU6JFFTxfewwQgod\nl4WGpSmhjmaECzpyi+OgGIMxhs8nU2j/hJ+OFmfsPYmU6M+zL4+rg6bMSG9+7M1Z\nDC/FEYL5GxWYD7PiJ2pLFxWL2WIvHRm5HwuxU7b5ojJeJET538FS3nKiVeoKxgY4\nEPYxHCZc9Q3uM0W1he1hHKB5EOUV/TV1eLs3K4JxJVn2aH4iLXOHJlwovtWs9tMn\nOPrtw/2tAgMBAAECggEADRYP9XVAEcZ0EvL3jp2ECEZvaupWNIC9lqSZOoK+bdXJ\n67jIIrGPieuA3Oz4NwLuBIBQ5fizDv2f6WVeP4W4Us1vhhjoyqSt6pspF/L+v4Ez\nz2yM7ny8Sb1F/5l3nvCv9cBPcRrbSacpAYz2GKyFwYx53XM/HSV+kX3S77Q/Nbvs\nrUzC9nC02/IFCYO5yB0wRimi9NLNLW8C2qVsDXRAS/kYf27MQJcN4WAUHtgp3VkV\nFxApysw3neP0Vp9mDmHxdqftmVIIwc6BROjKEQgTFy+/A24Es4fN5FHVW1N4wRhJ\n4CpRfPktKNk2HjpA6AnP2lMimIFO3WPQlq0/txKhOQKBgQDXJ6/niFJBrPa8UTo4\ninMVEiFez+sKSp8Tl4x7kZ9+l92/FM0SzGPBGztLiUjBvVE+jFnn9gGJA5wFg44L\n5FJAECylUGlKrMHLWlcN2JiVLAyt7v9jLgmvhEoZvyyK5jr/Fo5UfIKxjgknv+Mv\nudp4fMBRR0fG8DroerUSg6MZJQKBgQDGbFldxqNkeb9xD1OUfdJ5aXBc2Fl2d0JZ\nad/XgBPCyPvnt1OeltaEHiB77F/VRY7a9MGcy7XQ60fiYYNPgguzrniX7qvRsGmN\nCvKFDvI+iGPBGBpasV+45a8pfrN6WlFA1sxaJT15SaLTGeRQnt7wblFWpkhoqk6U\nHxOsqfo/6QKBgD/WSa3j16we2rJzU1f1VEH7OCV+gVlzXJGelJMRWQZhnuyUCmi6\ndhqUrtoxqIG7X0C0ufRGHJx/kqpcJyhGHVVetzBxlFwQuAtTCaNVEaipAjYVRHcz\n8LHACZBsFZY8y2JmWeKdctWls/e0Sn8doMHBGfrDsHtJSeEyj0kn/5t1AoGALDEN\nZjlLQqFq5b9IGhY7vhahk8wLgLrm6AsQc2pu/D7O+7h0wylM9XfQPElUvqcTPeit\nBkLIZ5M/G0gkepy4BnihGxVo5vanS2ZYxRGjGhI+RU8c7335l7Bv5on1ZxaeahZs\nxNbubgjcXq+xjdMUS/AF5Yp7LfRgM9UICLiCp6ECgYAWGOwIP08sutfrYbzDhrfV\np7NpDA/5D+oreU06ikMm+rv//RDtQIZkIH3FrfKlETys+ciyEBZDDEf6es1o+Aq/\nQHcsm4OMvNlxEfOxoSZ7L35+PBZ9EuPm1UGcUHMhy1c78K0DD48928HYay/wK4iz\n27UzLGvqwegKCAORCzwXlw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "sikoma-ea76e@sikoma-ea76e.iam.gserviceaccount.com",
+  "client_id": "104388329499164881688",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sikoma-ea76e%40sikoma-ea76e.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

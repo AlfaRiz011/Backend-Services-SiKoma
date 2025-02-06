@@ -40,7 +40,7 @@ const Post = sequelize.define('Post', {
       allowNull: true,
   },
 }, {
-  tableName: 'Post',
+  tableName: 'posts',
   timestamps: false,
 });
 

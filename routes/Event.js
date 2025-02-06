@@ -3,10 +3,10 @@ const router = express.Router();
 const eventController = require('../controllers/EventController');
 
 //Get Event Participant
-router.get('/:postId', eventController.getAllParticipant);
+router.get('/participant/:postId', eventController.getAllParticipant);
 
 //Get Event Participant by UserId
-router.get('/:userId', eventController.getEventPostByUserId);
+router.get('/post/:userId', eventController.getEventPostByUserId);
 
 //Participate Event
 router.post('/:postId', eventController.postParticipant);

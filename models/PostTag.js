@@ -23,7 +23,7 @@ const PostTag = sequelize.define('PostTag', {
         primaryKey: true,
     },
 }, {
-    tableName: 'PostTag',
+    tableName: 'post_tag',
     timestamps: false,
 });
 

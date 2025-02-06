@@ -23,7 +23,7 @@ const PostRecommendation = sequelize.define('PostRecommendation', {
         primaryKey: true,
     },
 }, {
-    tableName: 'PostRecommendation',
+    tableName: 'post_recommendation',
     timestamps: false,
 });
 

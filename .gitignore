@@ -3,5 +3,4 @@ node_modules/
 package-lock.json
 uploads/admin
 uploads/post
-uploads/user
-database/config/
+uploads/user 

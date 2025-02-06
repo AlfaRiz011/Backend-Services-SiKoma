@@ -1,10 +1,8 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Admin = require('../models/Admin');
-const PostRecommendation = require('../models/PostRecommendation');
-const Notification = require('../models/Notification');
-const Like = require('../models/Like');
-const FollowOrganization = require('../models/FollowAdmin');
+const PostRecommendation = require('../models/PostRecommendation'); 
+const Like = require('../models/Like'); 
 const PostTag = require('../models/PostTag');
 const path = require('path');
 const fs = require('fs');
@@ -12,6 +10,7 @@ const { GoogleAuth } = require('google-auth-library');
 const { google } = require('googleapis'); 
 const { Readable } = require('stream');
 const { sendSuccessResponse, sendErrorResponse } = require('../helpers/ResponseHelper');
+const { admin } = require('googleapis/build/src/apis/admin');
 
 exports.createPost = async (req, res) => {
   try {
@@ -67,27 +66,15 @@ exports.createPost = async (req, res) => {
       type,
       event_location: type === 'event' ? event_location : null,
       event_date: type === 'event' ? event_date : null,
-      event_time: type === 'event' ? event_time : null, 
-      image: process.env.CONST_DRIVE_LINK + fileId,
+      event_time: type === 'event' ? event_time : null,
+      image: req.file ? req.file.filename : null, 
     });
-
-    const adminFollowers = await FollowOrganization.findAll({
-      where: { admin_id: adminId },
-      attributes: ['user_id'],
-    });
-    const adminFollowerIds = adminFollowers.map((follower) => follower.user_id);
-
-    const notifications = adminFollowerIds.map((userId) => ({
-      user_id: userId,
-      post_id: newPost.post_id,
-      is_active: true,
-    }));
-
-    await Notification.bulkCreate(notifications);
+ 
 
     return sendSuccessResponse(res, 201, 'Post created and notifications sent successfully', newPost);
+
   } catch (error) {
-    return sendErrorResponse(res, 400, 'Failed to create post and send notifications', error.message);
+    return sendErrorResponse(res, 400, 'Failed to create post', error.message);
   }
 };
 
@@ -269,30 +256,31 @@ exports.unlikePost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   try {
     const postToUpdate = await Post.findOne({ where: { post_id: req.params.postId } });
+   
     if (!postToUpdate) {
       return sendErrorResponse(res, 404, 'Post not found');
     }
-
+ 
     if (req.file) {
       const oldImagePath = path.join(__dirname, '../uploads/posts/', postToUpdate.image);
-
+       
       if (fs.existsSync(oldImagePath)) {
         fs.unlinkSync(oldImagePath);
       }
-
-      postToUpdate.image = req.file.filename;
+ 
+      postToUpdate.image = req.file.filename;  
     }
-
+ 
     const updatedData = {
       description: req.body.description || postToUpdate.description,
       type: req.body.type || postToUpdate.type,
       event_location: req.body.event_location || postToUpdate.event_location,
       event_date: req.body.event_date || postToUpdate.event_date,
       event_time: req.body.event_time || postToUpdate.event_time,
-      image: postToUpdate.image,
+      image: postToUpdate.image  
     };
 
-    await postToUpdate.update(updatedData);
+    await postToUpdate.update(updatedData);  
 
     return sendSuccessResponse(res, 200, 'Post updated successfully', postToUpdate);
   } catch (error) {

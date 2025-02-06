@@ -23,7 +23,7 @@ const EventParticipant = sequelize.define('EventParticipant', {
         primaryKey: true,
     },
 }, {
-    tableName: 'EventParticipant',
+    tableName: 'event_participant',
     timestamps: false,
 });
 

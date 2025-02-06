@@ -23,7 +23,7 @@ const Like = sequelize.define('Like', {
       primaryKey: true,
   },
 }, {
-  tableName: 'Like',
+  tableName: 'likes',
   timestamps: false,
 });
 
